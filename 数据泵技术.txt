@@ -1,0 +1,27 @@
+第一步：新建用户并将表空间扩大10G
+alter tablespace eprkindex add datafile 'E:\APP\ADMINISTRATOR\ORADATEDBF\eprkindex02.dbf' size 10g
+alter tablespace EPRKDATA add datafile 'E:\APP\ADMINISTRATOR\ORADATEDBF\EPRKDATA02.dbf' size10g
+create user eprk identified by eprk default tablespace EPRKDATA;
+grant connect,resource to eprk;
+alter user eprk quota unlimited on EPRKDATA;
+alter user eprk quota unlimited on EPRKINDEX;
+grant dba to eprk;
+
+第二步：新建文件夹并将数据泵文件放入
+create directory expdp01 as 'E:\imp001';
+grant read,write on directory expdp01 to lilei;
+
+..导出文件
+expdp eprkjs/eprkjs directory=expdp01 dumpfile=imp1201_%U.dmp logfile=impdp20171101.log parallel=8
+
+
+第三步：执行数据泵文件
+impdp eprkt1/eprkt1 directory=expdp01 dumpfile=imp1201_%U.dmp logfile=impdp20170508.log parallel=8 REMAP_SCHEMA=eprkjs:eprkt1 table_exists_action=replace
+
+
+注释：U表示自动搜索文件。
+     如果表存在则覆盖。
+查看表空间 ：select * from dba_data_files
+
+...跨用户只导入表结构
+impdp lilei/lilei directory=expdp01 dumpfile=imp1101_%U.dmp logfile=impdp20170508.log parallel=8 REMAP_SCHEMA=eprkjs:lilei  table_exists_action=replace content = metadata_only

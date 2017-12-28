@@ -1,0 +1,23 @@
+
+sqlplus /nolog
+
+;
+conne as / sysdba
+
+create tablespace eprkindex datafile 'E:\app\Administrator\oradatedbf\eprkindex01.dbf' size 1g;
+
+create tablespace EPRKDATA datafile 'E:\app\Administrator\oradatedbf\EPRKDATA01.dbf' size 3g;
+
+create user eprkjs identified by eprkjs default tablespace EPRKDATA;
+
+grant connect,resource to eprkjs;
+
+alter user eprkjs quota unlimited on EPRKDATA;
+
+alter user eprkjs quota unlimited on EPRKINDEX;
+
+grant connect,resource to eprkjs;
+
+
+grant dba to eprkjs;
+
