@@ -1,4 +1,4 @@
-µÚÒ»²½£ºĞÂ½¨ÓÃ»§²¢½«±í¿Õ¼äÀ©´ó10G
+ç¬¬ä¸€æ­¥ï¼šæ–°å»ºç”¨æˆ·å¹¶å°†è¡¨ç©ºé—´æ‰©å¤§10G
 alter tablespace eprkindex add datafile 'E:\APP\ADMINISTRATOR\ORADATEDBF\eprkindex02.dbf' size 10g
 alter tablespace EPRKDATA add datafile 'E:\APP\ADMINISTRATOR\ORADATEDBF\EPRKDATA02.dbf' size10g
 create user eprk identified by eprk default tablespace EPRKDATA;
@@ -7,21 +7,21 @@ alter user eprk quota unlimited on EPRKDATA;
 alter user eprk quota unlimited on EPRKINDEX;
 grant dba to eprk;
 
-µÚ¶ş²½£ºĞÂ½¨ÎÄ¼ş¼Ğ²¢½«Êı¾İ±ÃÎÄ¼ş·ÅÈë
+ç¬¬äºŒæ­¥ï¼šæ–°å»ºæ–‡ä»¶å¤¹å¹¶å°†æ•°æ®æ³µæ–‡ä»¶æ”¾å…¥
 create directory expdp01 as 'E:\imp001';
 grant read,write on directory expdp01 to lilei;
 
-..µ¼³öÎÄ¼ş
+..å¯¼å‡ºæ–‡ä»¶
 expdp eprkjs/eprkjs directory=expdp01 dumpfile=imp1201_%U.dmp logfile=impdp20171101.log parallel=8
 
 
-µÚÈı²½£ºÖ´ĞĞÊı¾İ±ÃÎÄ¼ş
+ç¬¬ä¸‰æ­¥ï¼šæ‰§è¡Œæ•°æ®æ³µæ–‡ä»¶
 impdp eprkt1/eprkt1 directory=expdp01 dumpfile=imp1201_%U.dmp logfile=impdp20170508.log parallel=8 REMAP_SCHEMA=eprkjs:eprkt1 table_exists_action=replace
 
 
-×¢ÊÍ£ºU±íÊ¾×Ô¶¯ËÑË÷ÎÄ¼ş¡£
-     Èç¹û±í´æÔÚÔò¸²¸Ç¡£
-²é¿´±í¿Õ¼ä £ºselect * from dba_data_files
+æ³¨é‡Šï¼šUè¡¨ç¤ºè‡ªåŠ¨æœç´¢æ–‡ä»¶ã€‚
+     å¦‚æœè¡¨å­˜åœ¨åˆ™è¦†ç›–ã€‚
+æŸ¥çœ‹è¡¨ç©ºé—´ ï¼šselect * from dba_data_files
 
-...¿çÓÃ»§Ö»µ¼Èë±í½á¹¹
+...è·¨ç”¨æˆ·åªå¯¼å…¥è¡¨ç»“æ„
 impdp lilei/lilei directory=expdp01 dumpfile=imp1101_%U.dmp logfile=impdp20170508.log parallel=8 REMAP_SCHEMA=eprkjs:lilei  table_exists_action=replace content = metadata_only
